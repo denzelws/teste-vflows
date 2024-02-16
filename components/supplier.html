@@ -1,0 +1,103 @@
+<style>
+    .bold-text {
+      font-weight: bold;
+    }
+
+    .legend-h4 {
+        margin: 10px; 
+    }
+
+    .form-control {
+        border-color: #6c757d; /* Cor da borda padrão */
+    }
+
+    .form-control:focus {
+        border-color: #6c757d; /* Altere a cor da borda quando em foco */
+        box-shadow: none; /* Remova a sombra */
+    }
+
+    .fieldset-border {
+        border: 1px solid #6c757d;
+        border-radius: 10px;
+    }
+</style>
+
+<fieldset class='mx-4 m fieldset-border'>
+    <legend class='bg-primary text-white'>
+        <h4 class='legend-h4'>Dados do Fornecedor</h4>
+    </legend>
+    <div class="row mx-2">
+        <div class="col-md-6">
+            <div class="mb-3">
+                <label for="razaoSocial" class="form-label bold-text">Razão Social:</label>
+                <input type="text" class="form-control" id="razaoSocial" required>
+            </div>
+            <div class="mb-3">
+                <label for="nomeFantasia" class="form-label bold-text">Nome Fantasia:</label>
+                <input type="text" class="form-control" id="nomeFantasia" required>
+            </div>
+            <div class="mb-3">
+                <label for="cep" class="form-label bold-text">CEP:</label>
+                <input type="text" class="form-control" id="cep" required>
+            </div>
+            <div class="mb-3">
+                <label for="endereco" class="form-label bold-text">Endereço:</label>
+                <input type="text" class="form-control" id="endereco" required>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="mb-3">
+                <label for="cnpj" class="form-label bold-text">CNPJ:</label>
+                <input type="text" class="form-control" id="cnpj" required>
+            </div>
+            <div class="mb-3">
+                <label for="inscricaoEstadual" class="form-label bold-text">Inscrição Estadual:</label>
+                <input type="text" class="form-control" id="inscricaoEstadual">
+            </div>
+            <div class="mb-3">
+                <label for="inscricaoMunicipal" class="form-label bold-text">Inscrição Municipal:</label>
+                <input type="text" class="form-control" id="inscricaoMunicipal">
+            </div>
+            <div class="mb-3">
+                <label for="numero" class="form-label bold-text">Número:</label>
+                <input type="number" class="form-control" id="numero" required>
+            </div>
+        </div>
+    </div>
+    <div class="row mx-2">
+        <div class="col-md-12 mb-3">
+            <label for="complemento" class="form-label bold-text">Complemento:</label>
+            <input type="text" class="form-control" id="complemento" required>
+        </div>
+    </div>
+
+<div class="row mx-2">
+    <div class="col-md-4 mb-3">
+        <label for="bairro" class="form-label bold-text">Bairro:</label>
+        <input type="text" class="form-control" id="bairro" required>
+    </div>
+    <div class="col-md-4 mb-3">
+        <label for="municipio" class="form-label bold-text">Município:</label>
+        <input type="text" class="form-control" id="municipio" required>
+    </div>
+    <div class="col-md-4 mb-3">
+        <label for="estado" class="form-label bold-text">Estado:</label>
+        <input type="text" class="form-control" id="estado" required>
+    </div>
+</div>
+
+<div class="row mx-2">
+    <div class="col-md-4 mb-3">
+        <label for="nomeDaPessoaDeContato" class="form-label bold-text">Nome da Pessoa de Contato:</label>
+        <input type="text" class="form-control" id="nomeDaPessoaDeContato" required>
+    </div>
+    <div class="col-md-4 mb-3">
+        <label for="telefone" class="form-label bold-text">Telefone:</label>
+        <input type="number" class="form-control" id="telefone" required>
+    </div>
+    <div class="col-md-4 mb-3">
+        <label for="email" class="form-label bold-text">E-mail:</label>
+        <input type="email" class="form-control" id="email" required>
+    </div>
+</div>
+</fieldset>
