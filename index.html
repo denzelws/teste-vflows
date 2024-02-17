@@ -6,6 +6,8 @@
   <title>Formulário de Cadastro</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
   <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js">
+  </script>
 </head>
 
 <style>
@@ -13,9 +15,52 @@
       text-align: center;
       margin: 30px 0;
     }
+
+    .fieldset-border {
+        border: 1px solid #6c757d;
+        border-radius: 10px;
+    }
+
+    .bold-text {
+      font-weight: bold;
+    }
+
+    .legend-h4 {
+        margin: 10px; 
+    }
+
+    .div-button-save {
+        display: flex;
+        align-items: center;
+        justify-content: center; 
+    }
+
+    .button-save-supplier {
+        width: 95%;
+        margin: 20px 0;
+        padding: 10px 0;
+        color: white;
+        background: green;
+        border-radius: 5px;
+        border: none;
+    }
+
+    .logo-container {
+        display: flex;
+        justify-content: center;
+        margin-bottom: 20px;
+    }
+
+    .logo-container img {
+        width: 100px;  
+        height: auto;
+    }
 </style>
 
 <body>
+<div class="logo-container">
+  <img src="assets/logo.png" alt="Logo VFLOWS" />
+</div>
 <h2 class='h1-title'>CADASTRO FORNECEDOR/PRODUTO</h2>
 
 <form id="cadastroForm">
@@ -23,43 +68,89 @@
     <div id='supplier-component'></div>
 
   <!-- Product field -->
-  <fieldset>
-    <legend>Dados do Produto</legend>
-    <div>
-      <label for="descricao">Descrição:</label>
-      <input type="text" id="descricao" required>
-    </div>
-    <!-- Outros campos obrigatórios para produto -->
-  </fieldset>
-
-  <!-- Table products -->
-  <fieldset>
-    <legend>Tabela de Produtos</legend>
-    <!-- Tabela de produtos aqui -->
-  </fieldset>
-
+    <div id='product-component'></div>
+    
   <!-- Table attachments -->
-  <fieldset>
-    <legend>Tabela de Anexos</legend>
-    <!-- Tabela de anexos aqui -->
-  </fieldset>
+    <div id="attachment-component"></div>
 
   <!-- Buttons -->
-  <div>
-    <button type="button" id="excluirDocumento">Excluir Documento</button>
-    <button type="button" id="visualizarDocumento">Visualizar Documento</button>
-    <button type="submit" id="salvarFornecedor">Salvar Fornecedor</button>
+  <div class="div-button-save">
+    <button type="submit" id="salvarFornecedor" class='button-save-supplier'>Salvar Fornecedor</button>
+  </div>
+
+  <!-- Loading Modal -->
+  <div class="modal" tabindex="-1" role="dialog" id="loadingModal">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-body">
+          <div class="d-flex justify-content-center">
+            <div class="spinner-border" role="status">
+              <span class="sr-only">Carregando...</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 </form>
-
-<!-- Incluir scripts JavaScript abaixo, utilizando o EcmaScript 6 conforme mencionado nos requisitos -->
-<script>
-    $(document).ready(function() {
-      // Carregar o componente de fornecedor
-      $('#supplier-component').load('components/supplier.html');
-    
-      // Lógica adicional aqui
-    });
-    </script>
 </body>
+
+<script>
+  $(document).ready(function() {
+    $('#supplier-component').load('components/supplier/supplier.html');
+    $('#product-component').load('components/product/product.html');
+    
+    // Function to handle values from product
+    $(document).on('change', '.product-container #valorUnitario, .product-container #qtdeEstoque', function() {
+        var valorUnitario = parseFloat($(this).closest('.product-container').find('#valorUnitario').val());
+        var qtdeEstoque = parseFloat($(this).closest('.product-container').find('#qtdeEstoque').val());
+        var valorTotal = valorUnitario * qtdeEstoque;
+        $(this).closest('.product-container').find('#valorTotal').val(valorTotal.toFixed(2));
+    });
+
+    $('#attachment-component').load('components/attachments/attachments.html');
+
+    var myModal = new bootstrap.Modal(document.getElementById('loadingModal'));
+
+    document.getElementById('salvarFornecedor').addEventListener('click', function(e) {
+        e.preventDefault();
+
+        // Loading Modal
+        myModal.show();
+
+        const attachData = {
+            razaoSocial: $('#razaoSocial').val(),
+            nomeFantasia: $('#nomeFantasia').val(),
+            cpnj: $('#cnpj').val(),
+            inscricaoEstadual: $('#inscricaoEstadual').val(),
+            inscricaoMunicipal: $('#inscricaoMunicipal').val(),
+            nomeContato: $('#nomeDaPessoaDeContato').val(),
+            telefoneContato: $('#telefone').val(),
+            emailContato: $('#email').val(),
+        }
+
+        const productData = []; 
+
+        $('.product-container').each(function(index){
+            const product = {
+                indice: index + 1,
+                descricaoProduto: $(this).find('#nomeProduto').val(),
+                unidadeMedida: $(this).find('#undMedida').val(),
+                qtdeEstoque: $(this).find('#qtdeEstoque').val(),
+                valorUnitario: $(this).find('#valorUnitario').val(),
+                valorTotal: $(this).find('#valorTotal').val()
+            };
+            productData.push(product);
+        })
+
+        const jsonData = {
+            attachData: attachData,
+            produtos: productData
+        }
+
+        console.log(jsonData);
+        myModal.hide();
+    });
+});
+</script>
 </html>
