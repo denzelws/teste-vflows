@@ -1,0 +1,108 @@
+<style>
+    .attachment-item {
+        display: flex;
+        align-items: center;
+    }
+
+    .attachment-item button {
+        margin-right: 5px;
+        background-color: transparent;
+        border: none;
+        cursor: pointer;
+    }
+
+    .attachment-item button i {
+        vertical-align: middle;
+    }
+
+    .attachments-container {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start; 
+        justify-content: flex-start;
+        margin: 20px;
+        border: 1px solid #6c757d;
+        border-radius: 10px;
+        padding: 10px;
+    }
+
+    .btn-add-atttachments {
+        background-color: green;
+        color: white;
+        border: none;
+        padding: 10px 20px;
+        border-radius: 5px;
+        margin-bottom: 20px;
+        cursor: pointer;
+        width: 98%;
+    }
+
+    .btn-delete-attach i {
+        color: red;
+    }
+
+    .btn-view i {
+        color: blue;
+    }
+
+    .btn-add-flexdiv {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+</style>
+
+<fieldset class='mx-4 mt-4 fieldset-border'>
+    <legend class='bg-primary text-white'>
+        <h4 class='legend-h4'>Anexos</h4>
+    </legend>
+    <div class="attachments-container" id="attachments-container">
+        <h4>Itens</h4>
+    </div>
+    <div class="btn-add-flexdiv">
+        <!-- Input element for file attachment -->
+        <input type="file" id="attachment-input" style="display: none;">
+        <button type="button" class="btn-add-atttachments" id="btn-add-atttachments">Incluir anexo</button>
+    </div>
+</fieldset>
+
+<script>
+  document.getElementById('btn-add-atttachments').addEventListener('click', function() {
+    document.getElementById('attachment-input').click();
+});
+
+document.getElementById('attachment-input').addEventListener('change', function(e) {
+    var file = e.target.files[0];
+    var reader = new FileReader();
+
+    reader.onloadend = function() {
+        console.log('Resultado:', reader.result);
+        
+        // Storing with sessionStorage
+        sessionStorage.setItem('documento', reader.result);
+
+        // Add file at list
+        var attachmentsContainer = document.getElementById('attachments-container');
+        var attachmentItem = document.createElement('div');
+        attachmentItem.classList.add('attachment-item');
+        attachmentItem.innerHTML = '<button class="btn-delete-attach"><i class="bi bi-trash"></i></button><button class="btn-view"><i class="bi bi-eye" style="background-color: blue; color: white;"></i></button><h3>' + file.name + '</h3>';
+        attachmentsContainer.appendChild(attachmentItem);
+
+        // Add event to download file
+        attachmentItem.querySelector('.btn-view').addEventListener('click', function() {
+            var a = document.createElement('a');
+            a.href = reader.result;
+            a.download = file.name;
+            a.click();
+        });
+
+        // Add event to remove file to the list
+        attachmentItem.querySelector('.btn-delete-attach').addEventListener('click', function() {
+            attachmentsContainer.removeChild(attachmentItem);
+        });
+    }
+
+    // Read as DataURL to be able to download
+    reader.readAsDataURL(file);
+});  
+</script>
