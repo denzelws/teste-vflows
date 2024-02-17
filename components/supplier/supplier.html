@@ -1,28 +1,15 @@
 <style>
-    .bold-text {
-      font-weight: bold;
-    }
-
-    .legend-h4 {
-        margin: 10px; 
-    }
-
     .form-control {
-        border-color: #6c757d; /* Cor da borda padrão */
+        border-color: #6c757d;
     }
 
     .form-control:focus {
-        border-color: #6c757d; /* Altere a cor da borda quando em foco */
-        box-shadow: none; /* Remova a sombra */
-    }
-
-    .fieldset-border {
-        border: 1px solid #6c757d;
-        border-radius: 10px;
+        border-color: #6c757d; 
+        box-shadow: none; 
     }
 </style>
 
-<fieldset class='mx-4 m fieldset-border'>
+<fieldset class='mx-4 fieldset-border'>
     <legend class='bg-primary text-white'>
         <h4 class='legend-h4'>Dados do Fornecedor</h4>
     </legend>
@@ -39,6 +26,7 @@
             <div class="mb-3">
                 <label for="cep" class="form-label bold-text">CEP:</label>
                 <input type="text" class="form-control" id="cep" required>
+                <div id="error-message" style="color: red;"></div>
             </div>
             <div class="mb-3">
                 <label for="endereco" class="form-label bold-text">Endereço:</label>
@@ -99,5 +87,26 @@
         <label for="email" class="form-label bold-text">E-mail:</label>
         <input type="email" class="form-control" id="email" required>
     </div>
-</div>
+</div> 
 </fieldset>
+
+<script>
+    document.getElementById('cep').addEventListener('blur', function(e) {
+    var cep = e.target.value;
+
+    fetch('https://viacep.com.br/ws/' + cep + '/json/')
+        .then(response => response.json())
+        .then(data => {
+            if (data.erro) {
+                document.getElementById('error-message').textContent = 'CEP não encontrado';
+            } else {
+                console.log(data);
+                document.getElementById('error-message').textContent = '';
+            }
+        })
+        .catch(error => {
+            console.log('Erro ao buscar CEP:', error);
+            document.getElementById('error-message').textContent = 'Erro ao buscar CEP';
+        });
+});
+</script>
